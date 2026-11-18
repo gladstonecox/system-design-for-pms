@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>System Design for PMs</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<title>System Design Blueprint</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
 <style>
-/* Layout: a centered column with a title and one card per diagram */
+/* Layout: one wide request-path diagram, then a layer-by-layer checklist and a "when to add" table for optional parts */
 :root {
   --bg: #f4f6f9;
   --surface: #ffffff;
@@ -14,50 +15,341 @@
   --muted: #5b6676;
   --line: #c9d1dc;
   --accent: #2563c9;
+  --accent-soft: #e3ecfa;
+  --async: #8a5a12;
+  --async-soft: #f7eddc;
   --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0e131a; --surface: #151c26; --fg: #e4e9f0; --muted: #94a0b1; --line: #2d3846;
-    --accent: #6ea0f5; color-scheme: dark;
+    --accent: #6ea0f5; --accent-soft: #1a2a44; --async: #e0a955; --async-soft: #2e2414; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0e131a; --surface: #151c26; --fg: #e4e9f0; --muted: #94a0b1; --line: #2d3846;
-  --accent: #6ea0f5; color-scheme: dark;
+  --accent: #6ea0f5; --accent-soft: #1a2a44; --async: #e0a955; --async-soft: #2e2414; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body {
   background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.55;
-  margin: 0; padding: 48px 16px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
 }
-main { max-width: 720px; margin: 0 auto; }
-h1 { font-family: var(--display); font-size: 32px; line-height: 1.15; margin: 0 0 8px; }
-.lede { color: var(--muted); margin: 0 0 32px; }
-ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-a.card {
-  display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
-  padding: 16px 20px; color: inherit; text-decoration: none;
-}
-a.card:hover, a.card:focus-visible { border-color: var(--accent); outline: none; }
-.card h2 { font-family: var(--display); font-size: 18px; margin: 0 0 4px; color: var(--accent); }
-.card p { margin: 0; color: var(--muted); }
+main { max-width: 1240px; margin: 0 auto; display: grid; gap: 48px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: 2.1rem; font-weight: 600; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; font-weight: 600; }
+h3 { font-size: 1.02rem; font-weight: 600; }
+p { margin: 0; }
+.lede { color: var(--muted); max-width: 68ch; margin-top: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+header { display: grid; gap: 6px; }
+
+/* Diagram */
+figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 20px 16px; }
+.scroll { overflow-x: auto; }
+svg.dia { display: block; width: 100%; min-width: 960px; height: auto; color: var(--fg); font-family: var(--body); }
+figcaption { color: var(--muted); font-size: 13.5px; margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.key { display: inline-flex; align-items: center; gap: 8px; }
+.key i { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--accent); }
+.key i.async { border-color: var(--async); border-top-style: dashed; }
+.key i.opt { border: 1.5px dashed var(--muted); height: 12px; border-radius: 3px; }
+
+.dia .box { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+.dia .box.req { fill: var(--accent-soft); stroke: var(--accent); }
+.dia .box.opt { fill: var(--surface); stroke: var(--muted); stroke-dasharray: 5 4; }
+.dia .box.as { fill: var(--async-soft); stroke: var(--async); }
+.dia .box.as.opt { stroke: var(--async); }
+.dia .t { fill: var(--fg); font-size: 14px; font-weight: 600; }
+.dia .s { fill: var(--muted); font-size: 11.5px; font-family: var(--mono); }
+.dia .lbl { fill: var(--muted); font-size: 11.5px; font-style: italic; }
+.dia .hdr { fill: var(--muted); font-size: 11px; font-family: var(--mono); letter-spacing: 0.08em; }
+.dia .band { fill: none; stroke: var(--line); stroke-dasharray: 2 5; }
+.dia .w { fill: none; stroke: var(--fg); stroke-width: 1.4; }
+.dia .w.req { stroke: var(--accent); stroke-width: 1.8; }
+.dia .w.as { stroke: var(--async); stroke-dasharray: 5 4; }
+.dia .ah { fill: var(--fg); }
+.dia .ah.req { fill: var(--accent); }
+.dia .ah.as { fill: var(--async); }
+
+/* Layer checklist */
+.layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.layer { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.layer .n { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.06em; }
+.layer dl { margin: 0; display: grid; gap: 8px; }
+.layer dt { font-size: 11.5px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.layer dd { margin: 0; font-size: 14px; }
+.section-head { display: grid; gap: 6px; margin-bottom: 16px; }
+.section-head p { color: var(--muted); max-width: 68ch; }
+
+/* Paths */
+.paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.path { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; min-width: 0; }
+.path ol { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14px; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+
+/* Optional table */
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 14px; }
+th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+td.cost { color: var(--muted); }
 </style>
 </head>
 <body>
+
 <main>
-  <h1>System Design for PMs</h1>
-  <p class="lede">Diagrams for reading and sketching system architecture as a product manager.</p>
-  <ul>
-    <li>
-      <a class="card" href="blueprint.html">
-        <h2>System Design Blueprint</h2>
-        <p>The general diagram most designs follow: clients, API, entry, services, data, and the optional components to add as you scale.</p>
-      </a>
-    </li>
-    <!-- Add new diagrams as another <li><a class="card" href="your-file.html">…</a></li> -->
-  </ul>
+  <header>
+    <span class="eyebrow">Reference</span>
+    <h1>System Design Blueprint</h1>
+    <p class="lede">A general shape most system diagrams share: clients call a single entry point, the entry point routes to services, and services own the data. Draw the solid boxes first. Add a dashed box only when a requirement forces it.</p>
+  </header>
+
+  <figure>
+    <div class="scroll">
+    <svg class="dia" viewBox="0 0 1240 620" role="img" aria-label="Generalized system architecture: clients send HTTPS requests to an API gateway and load balancer, which routes to read, write, and domain services. Read service checks a cache then a read replica; write service writes to the primary database, which replicates to the replica. Static assets come from a CDN backed by object storage. Services publish events to a message queue consumed by background workers that send notifications and feed analytics.">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah req" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah as" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+
+      <!-- Layer headers -->
+      <text class="hdr" x="40" y="26">1 · CLIENTS</text>
+      <text class="hdr" x="250" y="26">2 · EDGE / ENTRY</text>
+      <text class="hdr" x="490" y="26">3 · SERVICES (API)</text>
+      <text class="hdr" x="800" y="26">4 · DATA</text>
+      <text class="hdr" x="490" y="470">5 · ASYNC (OPTIONAL)</text>
+      <line class="band" x1="20" y1="450" x2="1220" y2="450"/>
+
+      <!-- Clients -->
+      <rect class="box" x="40" y="180" width="140" height="56" rx="8"/>
+      <text class="t" x="110" y="205" text-anchor="middle">Web app</text>
+      <text class="s" x="110" y="223" text-anchor="middle">browser / SPA</text>
+      <rect class="box" x="40" y="260" width="140" height="56" rx="8"/>
+      <text class="t" x="110" y="285" text-anchor="middle">Mobile app</text>
+      <text class="s" x="110" y="303" text-anchor="middle">iOS / Android</text>
+      <rect class="box" x="40" y="340" width="140" height="56" rx="8"/>
+      <text class="t" x="110" y="365" text-anchor="middle">Partner / bot</text>
+      <text class="s" x="110" y="383" text-anchor="middle">3rd-party API</text>
+
+      <!-- CDN -->
+      <rect class="box opt" x="250" y="50" width="160" height="56" rx="8"/>
+      <text class="t" x="330" y="75" text-anchor="middle">CDN</text>
+      <text class="s" x="330" y="93" text-anchor="middle">edge cache, static</text>
+      <path class="w" d="M95 180 V78 H248" marker-end="url(#a)"/>
+      <text class="lbl" x="104" y="70">static assets</text>
+
+      <!-- Gateway -->
+      <rect class="box req" x="250" y="200" width="160" height="170" rx="8"/>
+      <text class="t" x="330" y="228" text-anchor="middle">API gateway</text>
+      <text class="t" x="330" y="246" text-anchor="middle">+ load balancer</text>
+      <text class="s" x="270" y="276">· TLS termination</text>
+      <text class="s" x="270" y="295">· auth (token check)</text>
+      <text class="s" x="270" y="314">· rate limiting</text>
+      <text class="s" x="270" y="333">· routing by path</text>
+      <text class="s" x="270" y="352">· health checks</text>
+
+      <path class="w req" d="M180 208 H215 V285 H248" marker-end="url(#ar)"/>
+      <path class="w req" d="M180 288 H248" marker-end="url(#ar)"/>
+      <path class="w req" d="M180 368 H215 V292"/>
+      <text class="lbl" x="196" y="404">HTTPS + token</text>
+
+      <!-- Services -->
+      <rect class="box req" x="490" y="150" width="210" height="70" rx="8"/>
+      <text class="t" x="510" y="178">Read service</text>
+      <text class="s" x="510" y="200">GET /items/:id</text>
+      <rect class="box req" x="490" y="250" width="210" height="70" rx="8"/>
+      <text class="t" x="510" y="278">Write service</text>
+      <text class="s" x="510" y="300">POST · PATCH · DELETE</text>
+      <rect class="box" x="490" y="350" width="210" height="70" rx="8"/>
+      <text class="t" x="510" y="378">Domain service</text>
+      <text class="s" x="510" y="400">user · search · feed …</text>
+
+      <path class="w req" d="M410 285 H450 V185 H488" marker-end="url(#ar)"/>
+      <path class="w req" d="M450 285 H488" marker-end="url(#ar)"/>
+      <path class="w" d="M450 285 V385 H488" marker-end="url(#a)"/>
+      <text class="lbl" x="420" y="140">routes /v1/*</text>
+      <text class="s" x="440" y="232" text-anchor="end">×N</text>
+
+      <!-- Object storage -->
+      <rect class="box opt" x="800" y="50" width="190" height="56" rx="8"/>
+      <text class="t" x="895" y="75" text-anchor="middle">Object storage</text>
+      <text class="s" x="895" y="93" text-anchor="middle">images, files, blobs</text>
+      <path class="w" d="M410 78 H798" marker-start="url(#a)"/>
+      <text class="lbl" x="604" y="70" text-anchor="middle">CDN pulls on miss (origin)</text>
+
+      <!-- Cache -->
+      <rect class="box opt" x="800" y="140" width="190" height="56" rx="8"/>
+      <text class="t" x="895" y="165" text-anchor="middle">Cache</text>
+      <text class="s" x="895" y="183" text-anchor="middle">key → value, TTL</text>
+      <path class="w req" d="M700 170 H798" marker-end="url(#ar)"/>
+      <text class="lbl" x="712" y="162">① check</text>
+
+      <!-- Read replica (cylinder) -->
+      <path class="box" d="M800 238 V280 A95 12 0 0 0 990 280 V238"/>
+      <ellipse class="box" cx="895" cy="238" rx="95" ry="12"/>
+      <text class="t" x="895" y="268" text-anchor="middle">Read replica</text>
+      <path class="w req" d="M700 205 H740 V262 H798" marker-end="url(#ar)"/>
+      <text class="lbl" x="746" y="254">② on miss</text>
+
+      <!-- Primary DB (cylinder) -->
+      <path class="box req" d="M800 338 V384 A95 12 0 0 0 990 384 V338"/>
+      <ellipse class="box req" cx="895" cy="338" rx="95" ry="12"/>
+      <text class="t" x="895" y="368" text-anchor="middle">Primary DB</text>
+      <text class="s" x="895" y="386" text-anchor="middle">source of truth</text>
+      <path class="w req" d="M700 300 H758 V360 H798" marker-end="url(#ar)"/>
+      <text class="lbl" x="764" y="320">writes</text>
+      <path class="w" d="M700 392 H798" marker-end="url(#a)"/>
+      <text class="lbl" x="712" y="410">own tables</text>
+      <path class="w" d="M1010 360 H1030 V262 H1012" marker-end="url(#a)"/>
+      <text class="lbl" x="1040" y="315">replicates</text>
+      <text class="lbl" x="1040" y="330">(async, lag)</text>
+      <path class="w" d="M990 168 H1060 V118" stroke-dasharray="3 3"/>
+      <path class="w" d="M1060 168 V248" stroke-dasharray="3 3"/>
+      <text class="lbl" x="1068" y="200">write invalidates</text>
+      <text class="lbl" x="1068" y="215">cache key</text>
+
+      <!-- Async -->
+      <rect class="box as opt" x="490" y="490" width="210" height="64" rx="8"/>
+      <text class="t" x="510" y="516">Message queue</text>
+      <text class="s" x="510" y="537">topic: item.created</text>
+      <path class="w as" d="M595 420 V488" marker-end="url(#aa)"/>
+      <text class="lbl" x="604" y="462">publish event</text>
+
+      <rect class="box as" x="800" y="490" width="190" height="64" rx="8"/>
+      <text class="t" x="820" y="516">Workers</text>
+      <text class="s" x="820" y="537">consumers, retries</text>
+      <path class="w as" d="M700 522 H798" marker-end="url(#aa)"/>
+      <text class="lbl" x="712" y="514">consume</text>
+
+      <rect class="box" x="1060" y="470" width="150" height="52" rx="8"/>
+      <text class="t" x="1135" y="493" text-anchor="middle">Notifications</text>
+      <text class="s" x="1135" y="511" text-anchor="middle">push · email · sms</text>
+      <rect class="box" x="1060" y="542" width="150" height="52" rx="8"/>
+      <text class="t" x="1135" y="565" text-anchor="middle">Analytics / DW</text>
+      <text class="s" x="1135" y="583" text-anchor="middle">logs, metrics, ETL</text>
+      <path class="w as" d="M990 512 H1025 V496 H1058" marker-end="url(#aa)"/>
+      <path class="w as" d="M1025 512 V568 H1058" marker-end="url(#aa)"/>
+    </svg>
+    </div>
+    <figcaption>
+      <span class="key"><i></i>synchronous request path (user waits)</span>
+      <span class="key"><i class="async"></i>asynchronous, via queue (user does not wait)</span>
+      <span class="key"><i class="opt"></i>dashed box = optional, add when a requirement calls for it</span>
+    </figcaption>
+  </figure>
+
+  <section>
+    <div class="section-head">
+      <h2>Walk a request through it</h2>
+      <p>Tracing one read and one write end to end is the fastest way to check that every box earns its place.</p>
+    </div>
+    <div class="paths">
+      <div class="path">
+        <h3>Read path</h3>
+        <ol>
+          <li>Client sends <code>GET /v1/items/42</code> with a token.</li>
+          <li>Gateway checks the token and rate limit, then routes to a read-service instance.</li>
+          <li>Read service checks the cache. A hit returns immediately.</li>
+          <li>On a miss, it queries a read replica, fills the cache, and returns.</li>
+        </ol>
+      </div>
+      <div class="path">
+        <h3>Write path</h3>
+        <ol>
+          <li>Client sends <code>POST /v1/items</code>.</li>
+          <li>Gateway routes to the write service, which validates the request.</li>
+          <li>Write service commits to the primary DB in one transaction and invalidates the cache key.</li>
+          <li>It publishes <code>item.created</code> and returns <code>201</code>. Workers send notifications and update analytics later.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Layer checklist</h2>
+      <p>What to decide at each layer, in the order you would present it.</p>
+    </div>
+    <div class="layers">
+      <article class="layer">
+        <span class="n">1 · CLIENTS</span>
+        <h3>Who calls the system</h3>
+        <dl>
+          <dt>Decide</dt><dd>Client types, online vs. offline use, polling vs. push (WebSocket, SSE).</dd>
+          <dt>Ask</dt><dd>How many daily users? Read-to-write ratio? Latency target for the main screen?</dd>
+        </dl>
+      </article>
+      <article class="layer">
+        <span class="n">2 · API DESIGN</span>
+        <h3>The contract</h3>
+        <dl>
+          <dt>Decide</dt><dd>Resources and verbs: <code>GET /items</code>, <code>POST /items</code>, <code>PATCH /items/:id</code>. REST, GraphQL, or gRPC.</dd>
+          <dt>Ask</dt><dd>Pagination (cursor or offset)? Idempotency keys on writes? Versioning (<code>/v1</code>)?</dd>
+        </dl>
+      </article>
+      <article class="layer">
+        <span class="n">3 · EDGE / ENTRY</span>
+        <h3>Load balancer + API gateway</h3>
+        <dl>
+          <dt>Decide</dt><dd>One public entry point that handles TLS, auth, rate limits, and routing, and spreads load across instances.</dd>
+          <dt>Ask</dt><dd>Balancing strategy (round robin, least connections)? What happens when an instance fails its health check?</dd>
+        </dl>
+      </article>
+      <article class="layer">
+        <span class="n">4 · SERVICES</span>
+        <h3>Business logic</h3>
+        <dl>
+          <dt>Decide</dt><dd>Split by domain (user, order, feed) or by read vs. write. Keep services stateless so you can add instances.</dd>
+          <dt>Ask</dt><dd>Which service owns which data? Which calls must be synchronous, and which can be events?</dd>
+        </dl>
+      </article>
+      <article class="layer">
+        <span class="n">5 · DATA</span>
+        <h3>Database</h3>
+        <dl>
+          <dt>Decide</dt><dd>SQL for relations and transactions, NoSQL for scale and flexible shape. Define the schema and main indexes.</dd>
+          <dt>Ask</dt><dd>Strong or eventual consistency? Replicas for reads? Shard key once one node is not enough?</dd>
+        </dl>
+      </article>
+      <article class="layer">
+        <span class="n">6 · CROSS-CUTTING</span>
+        <h3>Running it</h3>
+        <dl>
+          <dt>Decide</dt><dd>Logging, metrics, tracing, alerting. Backups and failover for the primary DB.</dd>
+          <dt>Ask</dt><dd>What is the single point of failure? What degrades gracefully when the primary is unhealthy?</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>When to add an optional component</h2>
+      <p>Each one solves a specific problem and adds something you now have to operate. Name the trigger before you draw it.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Component</th><th>Add it when</th><th>Sits between</th><th>Cost you take on</th></tr></thead>
+        <tbody>
+          <tr><td>Cache</td><td>The same data is read far more often than it changes, or the DB is the latency bottleneck.</td><td>Service ↔ DB</td><td class="cost">Stale reads, invalidation logic</td></tr>
+          <tr><td>Read replica</td><td>Reads outnumber writes and one DB node can't serve them all.</td><td>Primary → replica</td><td class="cost">Replication lag, read-your-own-write issues</td></tr>
+          <tr><td>CDN</td><td>Users are spread geographically, or you serve images, video, JS, or CSS.</td><td>Client ↔ object storage</td><td class="cost">Cache purge on deploy, per-GB fees</td></tr>
+          <tr><td>Object storage</td><td>You store files or blobs that don't belong in database rows.</td><td>Service / CDN ↔ bucket</td><td class="cost">Upload flow (often pre-signed URLs)</td></tr>
+          <tr><td>Message queue</td><td>Work can happen after the response (fan-out, emails, retries), or traffic spikes need buffering.</td><td>Producer → consumers</td><td class="cost">Eventual consistency, duplicate delivery, dead-letter handling</td></tr>
+          <tr><td>Search index</td><td>Users need full-text search, fuzzy matching, or faceted filters.</td><td>DB → index (via events)</td><td class="cost">A second copy of data to keep in sync</td></tr>
+          <tr><td>Sharding</td><td>Data or write volume exceeds a single primary.</td><td>Service → DB partitions</td><td class="cost">Cross-shard queries, rebalancing</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </main>
 </body>
 </html>
