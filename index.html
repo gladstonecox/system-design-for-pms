@@ -39,14 +39,13 @@ body {
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 40px 64px;
 }
-main { max-width: 1240px; margin: 0 auto; display: grid; gap: 48px; }
+main { margin: 0 auto; display: grid; gap: 56px; }
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
-h1 { font-size: 2.1rem; font-weight: 600; letter-spacing: -0.01em; }
-h2 { font-size: 1.35rem; font-weight: 600; }
-h3 { font-size: 1.02rem; font-weight: 600; }
+h1 { font-size: 2.75rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+h2 { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.3; }
 p { margin: 0; }
-.lede { color: var(--muted); max-width: 68ch; margin-top: 8px; }
-.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); margin-top: 8px; }
 header { display: grid; gap: 6px; }
 
 /* Diagram */
@@ -84,7 +83,9 @@ figcaption { color: var(--muted); font-size: 13.5px; margin-top: 12px; display: 
 .layer dt { font-size: 11.5px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
 .layer dd { margin: 0; font-size: 14px; }
 .section-head { display: grid; gap: 6px; margin-bottom: 16px; }
-.section-head p { color: var(--muted); max-width: 68ch; }
+.section-head p { color: var(--muted); }
+main > section > .section-head { border-top: 1px solid var(--line); padding-top: 28px; }
+.comp .sub { color: var(--muted); font-size: 14.5px; margin: 0; }
 
 /* Paths */
 .paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
@@ -100,18 +101,98 @@ th { font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; let
 tr:last-child td { border-bottom: 0; }
 td:first-child { font-weight: 600; white-space: nowrap; }
 td.cost { color: var(--muted); }
+/* Page nav */
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.toc a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 5px 12px; text-decoration: none; }
+.toc a:hover, .toc a:focus-visible { text-decoration: underline; }
+section[id], article[id] { scroll-margin-top: 20px; }
+a { color: var(--accent); }
+/* Interview process */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.steps > li { counter-increment: step; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.steps > li::before { content: "STEP " counter(step); font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; color: var(--accent); }
+.steps p { font-size: 14px; }
+.steps ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13.5px; color: var(--muted); }
+/* Component guides */
+.comps { display: grid; gap: 20px; }
+.comp { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: grid; gap: 16px; min-width: 0; }
+.comp > header { display: grid; gap: 4px; }
+.comp h4 { margin: 0 0 8px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.comp .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+.comp .cols > div { min-width: 0; }
+.comp dl { margin: 0; display: grid; gap: 10px; }
+.comp dt { font-weight: 600; font-size: 14px; }
+.comp dd { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+.comp dd b { color: var(--fg); font-weight: 600; }
+.comp .note { font-size: 14px; color: var(--muted); border-left: 3px solid var(--accent); padding-left: 12px; }
+ul.tr { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+ul.tr b { font-weight: 600; }
+.tip { margin-top: 12px; font-size: 14px; background: var(--accent-soft); border-radius: 8px; padding: 10px 12px; }
+table.compact { min-width: 640px; }
+.comp .tablewrap { background: var(--bg); }
+/* Trade-offs */
+.say { margin-top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 8px; }
+.say p { font-size: 14px; }
+/* Sources */
+.sources { border-top: 1px solid var(--line); padding-top: 24px; display: grid; gap: 8px; }
+.sources p { color: var(--muted); font-size: 14px; }
+.sources ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; }
+/* API guide */
+.toc.sub { margin-top: 6px; }
+.toc.sub a { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.toc.sub a:hover, .toc.sub a:focus-visible { color: var(--accent); border-color: var(--accent); }
+svg.dia.sm { min-width: 560px; max-width: 900px; margin: 0 auto; }
+.apis { display: grid; gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: grid; gap: 14px; min-width: 0; }
+.panel > p, .panel li, .panel dd { font-size: 14.5px; }
+.panel h4 { margin: 6px 0 0; font-family: var(--mono); font-size: 11.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.panel .tablewrap { background: var(--bg); }
+.note { font-size: 14px; color: var(--muted); border-left: 3px solid var(--accent); padding-left: 12px; }
+pre.code { margin: 0; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-family: var(--mono); font-size: 12.5px; line-height: 1.6; }
+pre.code code { background: none; padding: 0; font-size: inherit; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.pair > div { min-width: 0; display: grid; gap: 8px; align-content: start; }
+.pair p { font-size: 13.5px; color: var(--muted); }
+.bad pre.code { border-left: 3px solid #c0392b; }
+.good pre.code { border-left: 3px solid #2e8b57; }
+.flow { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+dl.defs { margin: 0; display: grid; gap: 10px; }
+dl.defs dt { font-weight: 600; font-size: 14.5px; }
+dl.defs dd { margin: 2px 0 0; color: var(--muted); }
+details { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; background: var(--bg); }
+details summary { cursor: pointer; font-weight: 600; font-size: 14.5px; }
+details p { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.provenance { font-size: 13px; color: var(--muted); }
+/* API guide: PM layers */
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 6px; font-size: 13px; color: var(--muted); }
+.lg { display: inline-flex; align-items: center; gap: 8px; }
+.lg::before { content: ""; width: 14px; height: 14px; border-radius: 3px; flex: none; }
+.lg.core::before { background: var(--surface); border: 1px solid var(--line); }
+.lg.lens-key::before { background: var(--async-soft); border-left: 3px solid var(--async); }
+.lg.deep-key::before { border: 1.5px dashed var(--muted); }
+.lens { font-size: 14.5px; background: var(--async-soft); border-left: 3px solid var(--async); border-radius: 0 8px 8px 0; padding: 10px 14px; }
+.lens b { color: var(--async); }
+details.deeper { border: 1.5px dashed var(--line); background: transparent; padding: 10px 14px; display: grid; gap: 10px; }
+details.deeper[open] { padding-bottom: 14px; }
+details.deeper > summary { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); }
+details.deeper > summary:hover { color: var(--accent); }
+details.deeper > p, details.deeper li { font-size: 14px; color: var(--fg); margin-top: 0; }
+details.deeper > * + * { margin-top: 10px; }
+.say-line { font-size: 14.5px; font-style: italic; border-left: 3px solid var(--accent); padding-left: 12px; }
 </style>
 </head>
 <body>
 
 <main>
   <header>
-    <span class="eyebrow">Reference</span>
     <h1>System Design Blueprint</h1>
     <p class="lede">A general shape most system diagrams share: clients call a single entry point, the entry point routes to services, and services own the data. Draw the solid boxes first. Add a dashed box only when a requirement forces it.</p>
+    <nav class="toc" aria-label="Page sections">
+      <a href="#blueprint">Blueprint</a><a href="#process">Interview Process</a><a href="#api">API Design</a><a href="#components">Component Guides</a><a href="#optional">When to Add</a><a href="#tradeoffs">Trade-Offs</a>
+    </nav>
   </header>
 
-  <figure>
+  <figure id="blueprint">
     <div class="scroll">
     <svg class="dia" viewBox="0 0 1240 620" role="img" aria-label="Generalized system architecture: clients send HTTPS requests to an API gateway and load balancer, which routes to read, write, and domain services. Read service checks a cache then a read replica; write service writes to the primary database, which replicates to the replica. Static assets come from a CDN backed by object storage. Services publish events to a message queue consumed by background workers that send notifications and feed analytics.">
       <defs>
@@ -248,12 +329,12 @@ td.cost { color: var(--muted); }
 
   <section>
     <div class="section-head">
-      <h2>Walk a request through it</h2>
+      <h2>Walk a Request Through It</h2>
       <p>Tracing one read and one write end to end is the fastest way to check that every box earns its place.</p>
     </div>
     <div class="paths">
       <div class="path">
-        <h3>Read path</h3>
+        <h3>Read Path</h3>
         <ol>
           <li>Client sends <code>GET /v1/items/42</code> with a token.</li>
           <li>Gateway checks the token and rate limit, then routes to a read-service instance.</li>
@@ -262,7 +343,7 @@ td.cost { color: var(--muted); }
         </ol>
       </div>
       <div class="path">
-        <h3>Write path</h3>
+        <h3>Write Path</h3>
         <ol>
           <li>Client sends <code>POST /v1/items</code>.</li>
           <li>Gateway routes to the write service, which validates the request.</li>
@@ -273,66 +354,693 @@ td.cost { color: var(--muted); }
     </div>
   </section>
 
-  <section>
+  <section id="process">
     <div class="section-head">
-      <h2>Layer checklist</h2>
-      <p>What to decide at each layer, in the order you would present it.</p>
+      <h2>Interview Process</h2>
+      <p>How to run the 45 minutes. This is separate from the diagram above. The diagram is the shape of the answer. This is the order you build it in. A PM round tests whether you pick the right system, prioritize requirements, and explain trade-offs. It does not test implementation detail.</p>
     </div>
-    <div class="layers">
-      <article class="layer">
-        <span class="n">1 · CLIENTS</span>
-        <h3>Who calls the system</h3>
-        <dl>
-          <dt>Decide</dt><dd>Client types, online vs. offline use, polling vs. push (WebSocket, SSE).</dd>
-          <dt>Ask</dt><dd>How many daily users? Read-to-write ratio? Latency target for the main screen?</dd>
-        </dl>
+    <ol class="steps">
+      <li>
+        <h3>Understand and Scope</h3>
+        <p>Confirm the product, the users, and 2–3 core workflows. Say out loud what you are leaving out and why.</p>
+        <ul>
+          <li><b>Functional:</b> 3–5 things users must be able to do.</li>
+          <li><b>Non-functional:</b> pick the 2–3 that matter most from performance, scalability, reliability, availability, consistency, security.</li>
+          <li><b>Estimate:</b> users × actions per day = reads and writes per day. That gives the read:write ratio and flags spikes.</li>
+        </ul>
+      </li>
+      <li>
+        <h3>High-Level Design</h3>
+        <p>Name the core entities, sketch the APIs, then draw boxes and arrows. Every functional requirement must show up in the diagram. Do not scale it yet.</p>
+        <ul>
+          <li>Entities → APIs → data model → diagram.</li>
+          <li>Hello Interview budgets about 5 minutes for the API step.</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Deep Dive on 1–2 Flows</h3>
+        <p>Take the most important flows and show which components deliver each non-functional requirement.</p>
+        <ul>
+          <li>Consistency → one atomic transaction.</li>
+          <li>Availability → replica or failover.</li>
+          <li>Performance → cache, async work.</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Bottlenecks and Scaling</h3>
+        <p>Zoom out and look for what breaks first.</p>
+        <ul>
+          <li>Single points of failure?</li>
+          <li>Peak-time spikes or hot users?</li>
+          <li>Global users? What if traffic is 10×?</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Trade-Offs and Wrap-Up</h3>
+        <p>Summarize the main decisions. For each, say what you gave up and why that still serves the product. See <a href="#tradeoffs">Trade-offs</a>.</p>
+        <ul>
+          <li>Check the design against the requirements from step 1.</li>
+          <li>Offer one next improvement.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <section id="api">
+    <div class="section-head">
+      <h2>API Design</h2>
+      <p>The contract between client and backend. In a PM interview this step takes about 5 minutes, and you are scored on whether your endpoints serve the requirements and whether you can explain what each choice means for users and the business. Examples use a ticketing app (events, venues, tickets, bookings).</p>
+      <div class="legend" aria-label="How to read this section">
+        <span class="lg core">PM core: always shown</span>
+        <span class="lg lens-key">Product lens: what users and the business notice</span>
+        <span class="lg deep-key">Going deeper: engineer-level, open if pushed</span>
+      </div>
+      <nav class="toc sub" aria-label="API sections">
+        <a href="#api-basics">What an API Is</a><a href="#api-anatomy">Anatomy of a Call</a><a href="#api-built">How It's Built</a><a href="#api-rest">REST</a><a href="#api-async">Sync vs. Async</a><a href="#api-protocol">Choosing a Protocol</a><a href="#api-paging">Pagination</a><a href="#api-security">Security</a><a href="#api-versioning">Versioning</a><a href="#api-product">API as a Product</a><a href="#api-example">Worked Example</a><a href="#api-playbook">Interview Playbook</a><a href="#api-quiz">Self-Check</a>
+      </nav>
+    </div>
+
+    <div class="apis">
+
+      <article class="panel" id="api-basics">
+        <h3>1. What an API Is</h3>
+        <p>An API (application programming interface) is a defined set of rules that lets two pieces of software talk to each other. It says what you can ask for, how to ask, and what shape the answer comes back in. It is a contract: as long as both sides keep to it, either side can change how it works inside.</p>
+        <div class="scroll">
+          <svg class="dia sm" viewBox="0 0 760 190" role="img" aria-label="A client sends a GET /events request to a server and gets a JSON response. The server sends a query to the database and gets rows back.">
+            <defs>
+              <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah req" d="M0 0 L10 5 L0 10 z"/></marker>
+              <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+            </defs>
+            <rect class="box req" x="20" y="60" width="170" height="70" rx="8"/>
+            <text class="t" x="105" y="90" text-anchor="middle">Client</text>
+            <text class="s" x="105" y="110" text-anchor="middle">browser, mobile app</text>
+            <rect class="box req" x="295" y="60" width="170" height="70" rx="8"/>
+            <text class="t" x="380" y="90" text-anchor="middle">Server</text>
+            <text class="s" x="380" y="110" text-anchor="middle">business logic</text>
+            <rect class="box" x="570" y="60" width="170" height="70" rx="8"/>
+            <text class="t" x="655" y="90" text-anchor="middle">Database</text>
+            <text class="s" x="655" y="110" text-anchor="middle">stored data</text>
+            <path class="w req" d="M190 82 H293" marker-end="url(#m2)"/>
+            <path class="w req" d="M293 110 H190" marker-end="url(#m2)"/>
+            <text class="lbl" x="242" y="72" text-anchor="middle">GET /events</text>
+            <text class="lbl" x="242" y="128" text-anchor="middle">JSON list</text>
+            <path class="w" d="M465 82 H568" marker-end="url(#m3)"/>
+            <path class="w" d="M568 110 H465" marker-end="url(#m3)"/>
+            <text class="lbl" x="517" y="72" text-anchor="middle">query</text>
+            <text class="lbl" x="517" y="128" text-anchor="middle">rows</text>
+            <text class="hdr" x="242" y="40" text-anchor="middle">EXTERNAL API</text>
+            <text class="hdr" x="517" y="40" text-anchor="middle">INTERNAL CALL</text>
+            <text class="s" x="242" y="168" text-anchor="middle">what interviews focus on</text>
+          </svg>
+        </div>
+        <p>Walk it through: your browser asks the server for a list of events. That ask is an API call. The server makes its own call to the database, gets the events back, and returns them to your browser.</p>
+        <h4>Three kinds of API you will meet</h4>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Kind</th><th>Between</th><th>Typical protocol</th><th>Interview weight</th></tr></thead>
+            <tbody>
+              <tr><td>External</td><td>Client ↔ your backend</td><td>REST (default), sometimes GraphQL</td><td class="cost">This is the one you design.</td></tr>
+              <tr><td>Internal</td><td>Service ↔ service</td><td>RPC / gRPC</td><td class="cost">Only if the question is backend-heavy.</td></tr>
+              <tr><td>Real-time</td><td>Client ↔ server, kept open</td><td>WebSocket, server-sent events, WebRTC</td><td class="cost">Only if a requirement needs live updates (chat, live feed).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lens"><b>Product lens.</b> The API is the surface every client is built on: your web app, your mobile app, and any partner. What the API can't do, no screen can do. When you list endpoints you are really listing which user actions the product supports.</p>
       </article>
-      <article class="layer">
-        <span class="n">2 · API DESIGN</span>
-        <h3>The contract</h3>
-        <dl>
-          <dt>Decide</dt><dd>Resources and verbs: <code>GET /items</code>, <code>POST /items</code>, <code>PATCH /items/:id</code>. REST, GraphQL, or gRPC.</dd>
-          <dt>Ask</dt><dd>Pagination (cursor or offset)? Idempotency keys on writes? Versioning (<code>/v1</code>)?</dd>
-        </dl>
+
+      <article class="panel" id="api-anatomy">
+        <h3>2. Anatomy of One Call</h3>
+        <p>Every web API call is one request and one response, sent over HTTP.</p>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Part</th><th>What it is</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td>Method (verb)</td><td>The action: read, create, update, delete.</td><td><code>POST</code></td></tr>
+              <tr><td>URL path</td><td>Which resource you are acting on.</td><td><code>/v1/events</code></td></tr>
+              <tr><td>Query parameters</td><td>Optional filters after <code>?</code>.</td><td><code>?city=LA</code></td></tr>
+              <tr><td>Headers</td><td>Metadata about the request. This is where the login token goes.</td><td><code>Authorization</code></td></tr>
+              <tr><td>Body</td><td>The data you send when creating or updating.</td><td>The new event, as JSON</td></tr>
+              <tr><td>Status code</td><td>Did it work? <code>2xx</code> success, <code>4xx</code> the request was wrong, <code>5xx</code> the server failed.</td><td><code>201 Created</code></td></tr>
+              <tr><td>Response body</td><td>The data you asked for, usually JSON (plain-text named fields).</td><td>The created event</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lens"><b>Product lens.</b> Status codes decide what the user sees. A <code>4xx</code> means the user can fix it: show a clear message such as "that seat is already taken" or "please log in." A <code>5xx</code> means the system failed: show a retry, not blame. Good error messages are a product decision that starts in the API.</p>
+        <details class="deeper">
+          <summary>Going deeper: a raw request and response</summary>
+          <div class="pair">
+            <div>
+              <h4>Request</h4>
+<pre class="code"><code>POST /v1/events?notify=true HTTP/1.1
+Host: api.example.com
+Authorization: Bearer eyJhbGciOi...
+Content-Type: application/json
+
+{
+  "title": "Spring Concert",
+  "city": "Los Angeles",
+  "date": "2027-01-01"
+}</code></pre>
+            </div>
+            <div>
+              <h4>Response</h4>
+<pre class="code"><code>HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": "123",
+  "title": "Spring Concert",
+  "city": "Los Angeles",
+  "date": "2027-01-01"
+}</code></pre>
+            </div>
+          </div>
+          <p>Common codes: 200 OK, 201 Created, 400 Bad Request, 401 Not authenticated, 403 Not allowed, 404 Not Found, 429 Too Many Requests, 500 Server Error. In an interview, bucket language (<code>2xx</code> / <code>4xx</code> / <code>5xx</code>) is safer than picking an exact code.</p>
+        </details>
       </article>
-      <article class="layer">
-        <span class="n">3 · EDGE / ENTRY</span>
-        <h3>Load balancer + API gateway</h3>
-        <dl>
-          <dt>Decide</dt><dd>One public entry point that handles TLS, auth, rate limits, and routing, and spreads load across instances.</dd>
-          <dt>Ask</dt><dd>Balancing strategy (round robin, least connections)? What happens when an instance fails its health check?</dd>
-        </dl>
+
+      <article class="panel" id="api-built">
+        <h3>3. How an API Is Built</h3>
+        <p>An API is not separate from your server. It is the set of doors the server exposes. When a request arrives, it moves through the blueprint at the top of the page:</p>
+        <ol class="flow">
+          <li><b>Find the server.</b> DNS turns the domain name into the address of your entry point.</li>
+          <li><b>Entry point.</b> The load balancer picks a healthy instance. The API gateway checks the token, applies rate limits, and routes by path.</li>
+          <li><b>Route to a handler.</b> The service matches the method and path (<code>POST /v1/events</code>) to one function in code.</li>
+          <li><b>Validate.</b> Is the input well formed, and is this user allowed? If not, return a <code>4xx</code>.</li>
+          <li><b>Do the work.</b> Read or write the database, call other services, or put a job on a queue.</li>
+          <li><b>Respond.</b> Build the JSON, choose a status code, send it back.</li>
+        </ol>
+        <p>Designing an API means deciding the list of doors (endpoints), what each accepts, and what each returns. Each functional requirement maps to one or more endpoints.</p>
+        <p class="lens"><b>Product lens.</b> Every step costs time, and every extra call a screen needs adds a full round trip. A home screen that needs five calls loads noticeably slower on mobile than one that needs one. When latency is a requirement, ask: how many calls does the main screen need?</p>
       </article>
-      <article class="layer">
-        <span class="n">4 · SERVICES</span>
-        <h3>Business logic</h3>
-        <dl>
-          <dt>Decide</dt><dd>Split by domain (user, order, feed) or by read vs. write. Keep services stateless so you can add instances.</dd>
-          <dt>Ask</dt><dd>Which service owns which data? Which calls must be synchronous, and which can be events?</dd>
-        </dl>
+
+      <article class="panel" id="api-rest">
+        <h3>4. REST: Your Default</h3>
+        <p>REST uses standard HTTP methods, with the things in your system represented as URLs. If you are unsure which protocol to use, choose REST. Hello Interview estimates it is right about 95% of the time.</p>
+        <h4>Resources are your core entities</h4>
+        <p>The nouns you named in the core-entities step become resources in the URL path. Use plural nouns, never verbs. The HTTP method carries the action.</p>
+        <div class="pair">
+          <div class="bad"><h4>Avoid</h4><pre class="code"><code>POST /events/create
+GET  /getEvent?id=123</code></pre></div>
+          <div class="good"><h4>Prefer</h4><pre class="code"><code>POST /events
+GET  /events/123
+GET  /events/123/tickets</code></pre></div>
+        </div>
+        <h4>Verbs are the actions</h4>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Method</th><th>Does</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td>GET</td><td>Read</td><td><code>GET /events</code></td></tr>
+              <tr><td>POST</td><td>Create</td><td><code>POST /bookings</code></td></tr>
+              <tr><td>PATCH</td><td>Update part of something</td><td><code>PATCH /events/123</code> with a new date</td></tr>
+              <tr><td>PUT</td><td>Replace something entirely</td><td><code>PUT /events/123</code></td></tr>
+              <tr><td>DELETE</td><td>Remove</td><td><code>DELETE /events/123</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4>Where inputs go</h4>
+        <ul class="tr">
+          <li><b>Path</b> if it identifies the thing and is required: <code>/events/123</code>.</li>
+          <li><b>Query</b> if it is an optional filter: <code>/events?city=LA&amp;date=2027-01-01</code>.</li>
+          <li><b>Body</b> if you are sending data to create or update.</li>
+        </ul>
+        <h4>Responses</h4>
+        <p>On the whiteboard, write the response as the entity, <code>GET /events → Event[]</code>, not every field. You will detail the entity in the high-level design.</p>
+        <p class="lens"><b>Product lens.</b> Write one endpoint per user action, and you can check coverage at a glance: every requirement should have an endpoint, and every endpoint should trace to a requirement. An endpoint with no requirement is scope creep. A requirement with no endpoint is a gap.</p>
+        <details class="deeper">
+          <summary>Going deeper: idempotency and retries</summary>
+          <p><b>Idempotent</b> means running the same call many times leaves the same end state. GET, PUT and DELETE are idempotent. POST is not: send <code>POST /bookings</code> three times and you may create three bookings. PATCH usually is.</p>
+          <p>This matters when a request times out and the client retries. For a POST that must not repeat, such as a payment or a booking, the client sends an <b>idempotency key</b> (a unique ID per attempt). The server sees the same key twice and returns the first result instead of charging again.</p>
+          <p>Hello Interview's advice: in interviews you will mostly use GET and POST. Don't spend time debating PUT vs. PATCH. If you are updating, PATCH is usually right. Most interviewers won't mark you down for imperfect REST naming, but plural nouns are an easy thing to get right.</p>
+        </details>
       </article>
-      <article class="layer">
-        <span class="n">5 · DATA</span>
-        <h3>Database</h3>
-        <dl>
-          <dt>Decide</dt><dd>SQL for relations and transactions, NoSQL for scale and flexible shape. Define the schema and main indexes.</dd>
-          <dt>Ask</dt><dd>Strong or eventual consistency? Replicas for reads? Shard key once one node is not enough?</dd>
-        </dl>
+
+      <article class="panel" id="api-async">
+        <h3>5. Sync vs. Async APIs</h3>
+        <p>Most calls are <b>synchronous</b>: the client waits, and the response carries the result. Some work takes too long to make the user wait, such as processing an uploaded video, generating a large export, or sending 10,000 invites. For those, use an <b>asynchronous</b> API.</p>
+        <div class="pair">
+          <div>
+            <h4>Synchronous</h4>
+<pre class="code"><code>POST /bookings
+  → 201 Created + Booking</code></pre>
+            <p>User waits a moment and sees the result.</p>
+          </div>
+          <div>
+            <h4>Asynchronous</h4>
+<pre class="code"><code>POST /exports
+  → 202 Accepted + { export_id, status: "processing" }
+GET  /exports/:id
+  → { status: "done", download_url }</code></pre>
+            <p>User gets an instant "we're on it," and the result arrives later.</p>
+          </div>
+        </div>
+        <h4>How the client finds out it's done</h4>
+        <ul class="tr">
+          <li><b>Polling:</b> the client asks <code>GET /exports/:id</code> every few seconds. Simple, wasteful.</li>
+          <li><b>Push:</b> the server notifies the client (push notification, email, WebSocket) or, for partners, calls a <b>webhook</b> URL they registered.</li>
+        </ul>
+        <p class="lens"><b>Product lens.</b> This decides the waiting experience. A sync call over a few seconds feels broken. An async call needs a "processing" state, a way to tell the user it's done, and a plan for failure ("your export failed, try again"). In the Calendar example, saving an event is sync, and sending invites and reminders is async, so the user isn't blocked by notifications.</p>
       </article>
-      <article class="layer">
-        <span class="n">6 · CROSS-CUTTING</span>
-        <h3>Running it</h3>
-        <dl>
-          <dt>Decide</dt><dd>Logging, metrics, tracing, alerting. Backups and failover for the primary DB.</dd>
-          <dt>Ask</dt><dd>What is the single point of failure? What degrades gracefully when the primary is unhealthy?</dd>
-        </dl>
+
+      <article class="panel" id="api-protocol">
+        <h3>6. Choosing a Protocol</h3>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Situation</th><th>Pick</th><th>One-line reason</th></tr></thead>
+            <tbody>
+              <tr><td>Normal client-to-backend API</td><td>REST</td><td>Universal, simple, readable. The default.</td></tr>
+              <tr><td>Many client types needing different data, slow mobile networks, screens that need many calls</td><td>GraphQL</td><td>One request returns exactly the fields the screen needs.</td></tr>
+              <tr><td>Calls between your own internal services</td><td>RPC / gRPC</td><td>Faster and more compact, and you control both ends.</td></tr>
+              <tr><td>Public API for outside developers</td><td>REST</td><td>They already know it and need no special setup.</td></tr>
+              <tr><td>Chat, live scores, live feed</td><td>WebSocket / SSE</td><td>The connection stays open so the server can push.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><b>GraphQL in one sentence:</b> instead of many fixed endpoints, the client sends one query listing exactly the fields it wants. Facebook built it in 2012 for slow mobile networks, where one screen needed several REST calls that each returned more data than the screen used.</p>
+        <p><b>gRPC in one sentence:</b> internal services call each other's functions directly over a compact binary format. It is faster than REST, but both sides must share the contract, so it is a bad fit for outside clients.</p>
+        <p class="lens"><b>Product lens.</b> GraphQL is a mobile-performance and team-speed lever: front-end teams can build new screens without waiting for new backend endpoints. The cost is a more complex backend. gRPC is invisible to users. Mention it only if asked how services talk to each other.</p>
+        <details class="deeper">
+          <summary>Going deeper: GraphQL mechanics</summary>
+          <p>With REST and several client types you either build many client-specific endpoints (sprawl) or one endpoint that returns everything (large, slow payloads). Those failures are <b>over-fetching</b> (more than you need) and <b>under-fetching</b> (needing extra calls). GraphQL answers both with one endpoint where the client picks the fields.</p>
+          <div class="pair">
+            <div>
+              <h4>GraphQL: one request</h4>
+<pre class="code"><code>POST /graphql
+
+{
+  event(id: "123") {
+    name
+    date
+    venue { name address }
+    tickets { section price available }
+  }
+}</code></pre>
+            </div>
+            <div>
+              <h4>REST: several requests</h4>
+<pre class="code"><code>GET /events/123
+GET /venues/45
+GET /events/123/tickets</code></pre>
+            </div>
+          </div>
+          <p>It still runs over HTTP, always as a POST to one endpoint with the query in the body, even for reads.</p>
+          <p><b>N+1 problem.</b> Ask for the top 100 events plus each venue: one query for the events, then 100 more for venues, for 101 total. The fix is batching (a "data loader"): collect the venue IDs and fetch them in one query.</p>
+          <p><b>Field-level authorization.</b> REST usually secures a whole endpoint. GraphQL can secure individual fields, so users can see an event's name but not its revenue.</p>
+          <p><b>Costs:</b> more server complexity, harder HTTP caching, and the N+1 risk.</p>
+        </details>
+        <details class="deeper">
+          <summary>Going deeper: RPC and gRPC mechanics</summary>
+          <p>Some backend-heavy questions have no client-facing API at all. A post-search system, for example, is mostly an indexing service, a ranking service and a logging service talking to each other. You can say there is no external API and move on, or outline the internal calls. Ask the interviewer which they prefer.</p>
+<pre class="code"><code>REST:  GET /events/123
+RPC:   getEvent(eventId: 123)</code></pre>
+          <p>RPC skips HTTP overhead (headers, URL parsing, JSON conversion) and sends compact binary data, usually Protocol Buffers (protobuf). The Hello Interview video says this can be 5 to 10 times faster. You define methods and message types in a file:</p>
+<pre class="code"><code>service TicketService {
+  rpc GetEvent(GetEventRequest) returns (Event);
+  rpc CreateBooking(CreateBookingRequest) returns (Booking);
+}</code></pre>
+          <p>gRPC generates typed client and server code in many languages from that file, so a Python service can call a Java service like a normal function. Outside clients still get REST, because they are diverse, need no setup, and benefit from readable JSON that passes through firewalls easily.</p>
+        </details>
       </article>
+
+      <article class="panel" id="api-paging">
+        <h3>7. Pagination</h3>
+        <p>Never return a million rows at once. That is a huge, slow response. Return a page at a time.</p>
+        <ul class="tr">
+          <li><b>Offset (page-based):</b> <code>?page=2&amp;limit=25</code>. Simple, and you can jump to any page. Usually the right default.</li>
+          <li><b>Cursor-based:</b> <code>?cursor=&lt;last item seen&gt;&amp;limit=25</code>. Starts after the last item you received, so it stays correct when new items keep arriving.</li>
+        </ul>
+        <p class="lens"><b>Product lens.</b> Match it to the UI. An infinite-scroll feed with constant new posts → cursor, or users see duplicates and gaps as they scroll. Search results or an admin table where users jump to page 7 → offset. If users report repeated items in a feed, offset pagination under heavy writes is a likely cause.</p>
+        <details class="deeper">
+          <summary>Going deeper: why offset breaks</summary>
+          <div class="pair">
+            <div>
+              <h4>Offset</h4>
+<pre class="code"><code>GET /events?page=1&amp;limit=25  → items 1–25
+GET /events?page=2&amp;limit=25  → items 26–50</code></pre>
+            </div>
+            <div>
+              <h4>Cursor</h4>
+<pre class="code"><code>GET /events?limit=25
+  → 25 events + next_cursor: "evt_025"
+GET /events?limit=25&amp;cursor=evt_025
+  → the 25 after that event</code></pre>
+            </div>
+          </div>
+          <p>If new events land above page 1 between your two requests, "items 26–50" now includes events you already saw. A cursor anchors to a specific item in a stable sort order, so inserts elsewhere can't shift your place. The cost: cursors can't jump straight to page 50.</p>
+        </details>
+      </article>
+
+      <article class="panel" id="api-security">
+        <h3>8. Security: Who Is Calling, and What They May Do</h3>
+        <p><b>Authentication</b> is proving who you are. <b>Authorization</b> is what you are allowed to do. On a ticketing app anyone can browse events, only logged-in users can book, and only admins can create events.</p>
+        <p>Identity travels as a <b>token in the request header</b>, issued when the user logs in. It never comes from the body.</p>
+        <div class="pair">
+          <div class="bad"><h4>Avoid</h4><pre class="code"><code>POST /bookings
+{ "ticket_id": "t9",
+  "user_id": "42" }</code></pre><p>Anyone could book, or tweet, or pay, as someone else by changing <code>user_id</code>.</p></div>
+          <div class="good"><h4>Prefer</h4><pre class="code"><code>POST /bookings
+Authorization: Bearer &lt;token&gt;
+{ "ticket_id": "t9" }</code></pre><p>Say out loud: "the server knows who I am from the token."</p></div>
+        </div>
+        <p>Mark protected endpoints as you write them, for example <code>POST /bookings (logged in)</code> and <code>POST /events (admin)</code>. This is shorthand for the interviewer, not real syntax.</p>
+        <p><b>Rate limiting</b> caps requests per user or key at the gateway, so one caller can't overload the system or abuse it.</p>
+        <p class="lens"><b>Product lens.</b> Who-can-do-what is a requirement, not an implementation detail. Roles (guest, user, admin, partner) and their permissions come from the product. Rate limits shape the experience too: set them too tight and real users hit "try again later" during a ticket drop; too loose and bots buy every seat.</p>
+        <details class="deeper">
+          <summary>Going deeper: JWT vs. session tokens</summary>
+          <div class="tablewrap">
+            <table class="compact">
+              <thead><tr><th></th><th>JWT (JSON Web Token)</th><th>Session token</th></tr></thead>
+              <tbody>
+                <tr><td>What the client sends</td><td>A JSON blob with the user's details (name, role, expiry) plus a signature.</td><td>A simple ID, like a ticket number.</td></tr>
+                <tr><td>How the server trusts it</td><td>Verifies the signature. A client can't edit its own role without breaking it.</td><td>Looks the ID up in a database or cache.</td></tr>
+                <tr><td>Cost</td><td class="cost">Hard to cancel before it expires.</td><td class="cost">A lookup on every request. Easy to revoke.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <article class="panel" id="api-versioning">
+        <h3>9. Versioning and Deprecation</h3>
+        <p>Once apps depend on your API, changing it can break them. Mobile makes this hard: old app versions stay installed for years, and you can't force everyone to update.</p>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Change</th><th>Safe?</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td>Additive</td><td>Yes. Old clients ignore what they don't know.</td><td>Add a new field, a new optional parameter, a new endpoint.</td></tr>
+              <tr><td>Breaking</td><td>No. Needs a new version.</td><td>Remove or rename a field, make an optional field required, change what a value means.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Breaking changes ship as a new version (<code>/v2/events</code>) while <code>/v1</code> keeps running. Then you retire the old one on purpose: announce it, give a timeline, watch who still calls it, and switch it off.</p>
+        <p class="lens"><b>Product lens.</b> Deprecation is a product decision with real users on the other end. It needs a policy (for example, 12 months' notice for partners), usage tracking, and sometimes a forced app upgrade for very old mobile versions. In an interview, saying "I'd version the API, because old mobile clients stay in use for years" shows you think past launch day.</p>
+      </article>
+
+      <article class="panel" id="api-product">
+        <h3>10. The API as a Product</h3>
+        <p>When outside developers build on your API (partners, integrations, a public developer platform), the API is the product and developers are the users. Questions like "design a payments API" or "design a public API for X" are testing this.</p>
+        <dl class="defs">
+          <dt>Access and keys</dt><dd>Developers sign up and get an API key that identifies their app. Keys let you track usage, apply limits, and cut off abuse.</dd>
+          <dt>Rate limits and tiers</dt><dd>Limits protect the system and often double as pricing: free tier at 100 calls a minute, paid tiers higher.</dd>
+          <dt>Webhooks</dt><dd>Instead of partners polling "did anything change?", they register a URL and you call it when events happen (booking confirmed, payment failed). Less load for you, faster updates for them.</dd>
+          <dt>Developer experience</dt><dd>Clear docs, a test sandbox, readable error messages, and stable versions. These decide adoption as much as features do.</dd>
+          <dt>Reliability promises</dt><dd>Partners build businesses on you, so uptime commitments (SLAs) and status pages matter.</dd>
+          <dt>Metrics</dt><dd>Time to first successful call, active integrations, error rate by endpoint, and the slowest response times (p95/p99 latency).</dd>
+        </dl>
+        <p class="lens"><b>Product lens.</b> For an internal API, the users are your own teams. For a public one, every design choice is a promise you'll keep for years. Lean toward fewer, well-documented endpoints, additive change, and generous deprecation windows.</p>
+      </article>
+
+      <article class="panel" id="api-example">
+        <h3>11. Worked Example: Requirements to Endpoints</h3>
+        <p>Ticketing app. Start from the functional requirements, write one endpoint per user action, and note the product decision each one carries.</p>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Requirement</th><th>Endpoint</th><th>Who</th><th>Product decision it carries</th></tr></thead>
+            <tbody>
+              <tr><td>Browse and search events</td><td><code>GET /events?city=&amp;date=</code> → Event[]</td><td>Anyone</td><td>Read-heavy and spiky, so cache it. Paginate: offset for search results.</td></tr>
+              <tr><td>See an event's details</td><td><code>GET /events/:id</code> → Event</td><td>Anyone</td><td>One call should fill the whole screen. Bundle venue details in.</td></tr>
+              <tr><td>See available seats</td><td><code>GET /events/:id/tickets</code> → Ticket[]</td><td>Anyone</td><td>Must be fresh. A stale "available" seat causes failed checkouts and angry users.</td></tr>
+              <tr><td>Hold seats while paying</td><td><code>POST /bookings</code> → Booking (status: held, expires_at)</td><td>Logged in</td><td>Hold for 10 minutes so nobody else takes the seat mid-checkout. Show a countdown.</td></tr>
+              <tr><td>Pay and confirm</td><td><code>POST /bookings/:id/payment</code> → Booking (confirmed)</td><td>Logged in</td><td>Idempotency key so a retry never double-charges. Confirmation email goes out async.</td></tr>
+              <tr><td>See my bookings</td><td><code>GET /bookings</code> → Booking[]</td><td>Logged in</td><td>"My" comes from the token, not a <code>user_id</code> parameter.</td></tr>
+              <tr><td>Create an event</td><td><code>POST /events</code> → Event</td><td>Admin</td><td>Role-gated. Organizers are a separate user type with their own needs.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4>How to say it in the interview</h4>
+        <p class="say-line">"I'll use REST. Each requirement gets one endpoint. Browsing is public and cached because it's read-heavy. Booking needs a login, and it's two steps: hold the seat, then pay. That way a user never pays for a seat someone else just took, and the payment call uses an idempotency key so retries can't double-charge. Confirmation emails go out asynchronously."</p>
+      </article>
+
+      <article class="panel" id="api-playbook">
+        <h3>12. Interview Playbook</h3>
+        <h4>Where this step sits</h4>
+        <p>Hello Interview's framework runs: requirements → core entities → API → data flow → high-level design → deep dives. Your entities become your resources. Budget about 5 minutes. Candidates fail more often by over-detailing this step than by rushing it.</p>
+        <h4>What to do, in order</h4>
+        <ol class="flow">
+          <li>Take each functional requirement and write the endpoint that serves it.</li>
+          <li>Say "REST" and give one reason. Mention GraphQL only if many client types or slow mobile networks are a stated concern.</li>
+          <li>Write responses as entity names, not field lists.</li>
+          <li>Mark which endpoints need login or a role.</li>
+          <li>Call out one or two product decisions the API carries, such as async work, pagination style, or retry safety on payments.</li>
+          <li>Stop, and move on to the high-level design.</li>
+        </ol>
+        <h4>Follow-ups you will get</h4>
+        <div class="tablewrap">
+          <table class="compact">
+            <thead><tr><th>Question</th><th>Strong PM answer</th></tr></thead>
+            <tbody>
+              <tr><td>"What if there are a million events?"</td><td>Paginate. Offset for search, cursor for an infinite feed, because offset shows duplicates while new items arrive.</td></tr>
+              <tr><td>"How do you know who's calling?"</td><td>Login token in the header. Never a user ID in the body.</td></tr>
+              <tr><td>"What if the payment request times out and retries?"</td><td>Idempotency key, so the second attempt returns the first result instead of charging twice.</td></tr>
+              <tr><td>"Why REST and not GraphQL?"</td><td>One web and one mobile client with similar needs. REST is simpler and caches well. I'd revisit if mobile screens needed many calls.</td></tr>
+              <tr><td>"This export takes two minutes."</td><td>Make it async: return 202 with a status, notify the user when it's ready, handle failure.</td></tr>
+              <tr><td>"We need to change this response."</td><td>Additive changes are safe. Breaking ones go to <code>/v2</code> with a deprecation timeline, because old mobile apps stay in use.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4>Common mistakes</h4>
+        <ul class="tr">
+          <li>Endpoints that don't trace back to a requirement, or requirements with no endpoint.</li>
+          <li>Verbs in the URL (<code>/createEvent</code>).</li>
+          <li>A user ID in the body to identify the caller.</li>
+          <li>Making the user wait on slow work that could be async.</li>
+          <li>Listing every field, or debating PUT vs. PATCH, instead of moving on.</li>
+          <li>Diving into protobuf or GraphQL internals unprompted. That signals engineer depth, not product judgment.</li>
+        </ul>
+      </article>
+
+      <article class="panel" id="api-quiz">
+        <h3>13. Self-Check</h3>
+        <p>Answer out loud, then open to check. The first five are the PM-style questions you are most likely to get.</p>
+        <details><summary>Mobile users say the feed shows the same posts twice when they scroll. What's likely happening?</summary><p>Offset pagination under heavy writes. New posts arrive above the current page, everything shifts, and the next page repeats items. Switch the feed to cursor pagination.</p></details>
+        <details><summary>A user taps "Pay," the network drops, and the app retries. How do you avoid a double charge?</summary><p>The client sends an idempotency key with the payment. The server sees the same key on the retry and returns the original result instead of charging again.</p></details>
+        <details><summary>Generating a report takes 90 seconds. What does the API look like?</summary><p>Async. <code>POST /reports</code> returns <code>202 Accepted</code> with an ID and a "processing" status. The client polls <code>GET /reports/:id</code>, or the user gets a notification when it's ready. Design the failure state too.</p></details>
+        <details><summary>You need to rename a field in a response. What do you do?</summary><p>Renaming is a breaking change. Add the new field alongside the old one (additive), or ship it in <code>/v2</code>. Keep <code>/v1</code> running, announce a deprecation timeline, and track who still calls it, because old mobile versions stay in use.</p></details>
+        <details><summary>A partner complains they have to keep asking your API whether bookings changed. What do you offer?</summary><p>Webhooks. The partner registers a URL, and you call it when a booking changes. They get updates faster and you stop serving wasted polling calls.</p></details>
+        <details><summary>Why REST for clients but gRPC between services?</summary><p>Clients are varied and need to work with no setup, so REST's standard HTTP and readable JSON fit. Between your own services you control both ends, so gRPC's compact, typed calls are faster.</p></details>
+        <details><summary>When would you choose GraphQL over REST?</summary><p>Several client types needing different data, slow mobile networks, or screens that need many REST calls. Accept a more complex backend and harder caching.</p></details>
+        <details><summary>How do you stop one user booking as another?</summary><p>Never trust a user ID in the body. The server identifies the caller from the login token in the header.</p></details>
+      </article>
+
+      <p class="provenance">Sources: REST, GraphQL, RPC, pagination and security follow the Hello Interview API design video. The Calendar sync/async split comes from the PM Calendar video. The status-code product lens, sync vs. async APIs, versioning and deprecation, the API-as-a-product panel, the worked ticketing example, and the idempotency-key advice are general product and engineering practice added for the PM angle. See Sources at the bottom of the page.</p>
+
     </div>
   </section>
 
-  <section>
+  <section id="components">
     <div class="section-head">
-      <h2>When to add an optional component</h2>
+      <h2>Component Guides</h2>
+      <p>For each part: the concepts you need to design it, the trade-offs you will be asked about, and what to say. Parts follow the order of the blueprint.</p>
+    </div>
+
+    <div class="comps">
+
+      <article class="comp" id="c-clients">
+        <header>
+          <h3>Clients</h3>
+          <p class="sub">Who calls the system</p>
+        </header>
+        <div class="cols">
+          <div>
+            <h4>Core concepts</h4>
+            <dl>
+              <dt>Client roles</dt><dd>Say what each client is for. Web handles heavier work like planning and editing. Mobile handles quick checks and reminders. Partners and bots call a public API.</dd>
+              <dt>DNS</dt><dd>The client looks up a name and gets the address of the entry point (the load balancer).</dd>
+              <dt>Request / response vs. real-time</dt><dd>Normal calls are request then response. For live updates, use polling, long-polling, WebSocket, or server-sent events.</dd>
+              <dt>Client-side behavior</dt><dd>Local caching, offline mode, optimistic UI (show the result before the server confirms).</dd>
+            </dl>
+          </div>
+          <div>
+            <h4>Trade-offs</h4>
+            <ul class="tr">
+              <li><b>Polling vs. push.</b> Polling is simple but wasteful and slightly stale. Push is instant but means holding many open connections.</li>
+              <li><b>Offline-capable vs. online-only.</b> Offline works anywhere but needs sync and conflict handling.</li>
+              <li><b>Many client types.</b> More reach, but old mobile versions stay in use for years, so the API must stay backward compatible.</li>
+            </ul>
+            <p class="tip"><b>Say:</b> "Web is for heavy planning, mobile is for quick checks." Bring up real-time only if a requirement needs it.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="c-api">
+        <header>
+          <h3>API Design</h3>
+          <p class="sub">The contract between client and backend</p>
+        </header>
+        <div class="cols">
+          <div>
+            <h4>Core concepts</h4>
+            <ul class="tr">
+              <li><b>REST</b> is the default: plural-noun resources, HTTP verbs, path / query / body inputs, <code>2xx</code> / <code>4xx</code> / <code>5xx</code> responses.</li>
+              <li><b>GraphQL</b> for many client types and slow networks. <b>gRPC</b> for service-to-service calls.</li>
+              <li><b>Pagination</b> (offset vs. cursor) and <b>security</b> (token in header, never a user ID in the body) are the usual follow-ups.</li>
+              <li><b>Product decisions the API carries:</b> sync vs. async work, versioning for old mobile apps, and partner needs like keys, rate limits and webhooks.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Trade-offs</h4>
+            <ul class="tr">
+              <li><b>REST vs. GraphQL.</b> Simple and cacheable vs. fewer round trips but more server complexity.</li>
+              <li><b>Offset vs. cursor.</b> Jump to any page vs. stable under heavy writes.</li>
+              <li><b>JWT vs. session token.</b> No lookup vs. easy to revoke.</li>
+            </ul>
+            <p class="tip"><b>Read the full guide:</b> <a href="#api">API design section</a>. Keep this step to about 5 minutes in an interview.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="c-edge">
+        <header>
+          <h3>Edge / Entry</h3>
+          <p class="sub">Load balancer, API gateway, CDN</p>
+        </header>
+        <div class="cols">
+          <div>
+            <h4>Core concepts</h4>
+            <dl>
+              <dt>Load balancer</dt><dd>Spreads requests across server instances and skips unhealthy ones using health checks. Common strategies are round robin and least connections.</dd>
+              <dt>API gateway</dt><dd>The single front door. Handles TLS, authentication, rate limiting, and routing each request to the right service.</dd>
+              <dt>Rate limiting</dt><dd>Caps requests per user or key so one caller can't overload the system or abuse it.</dd>
+              <dt>CDN</dt><dd>Servers spread around the world. The first request goes to the origin, then the copy is cached near users. Best for images, video, JS and CSS.</dd>
+              <dt>Hotspots</dt><dd>One server or key getting a lot more traffic than the rest, such as a celebrity's data.</dd>
+            </dl>
+          </div>
+          <div>
+            <h4>Trade-offs</h4>
+            <ul class="tr">
+              <li><b>Round robin vs. least connections.</b> Round robin is simple. Least connections adapts when requests take uneven time.</li>
+              <li><b>Gateway doing everything.</b> One place for auth and limits, but it is another hop and a single point of failure unless you run several.</li>
+              <li><b>CDN.</b> Much lower latency and origin load, but stale files until they expire or are purged, plus per-GB fees.</li>
+              <li><b>Rate limiting.</b> Protects the system, but legitimate users sometimes get a <code>429</code>.</li>
+            </ul>
+            <p class="tip"><b>Say:</b> "Requests hit the gateway, which authenticates and rate-limits, then routes to a healthy instance."</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="c-services">
+        <header>
+          <h3>Services</h3>
+          <p class="sub">Business logic</p>
+        </header>
+        <div class="cols">
+          <div>
+            <h4>Core concepts</h4>
+            <dl>
+              <dt>Stateless</dt><dd>A service keeps no user state in its own memory, so any instance can serve any request and you can just add instances. State lives in the database or cache.</dd>
+              <dt>Horizontal vs. vertical scaling</dt><dd>Vertical means a bigger machine: costly, capped, still one point of failure. Horizontal means more cheap machines: needs a load balancer, but survives failures. Default to horizontal.</dd>
+              <dt>Break a feature into steps</dt><dd>Work backward from what the user sees. A Twitter timeline needs: find who you follow, fetch their tweets, score them, rank them. Each step maps to a component.</dd>
+              <dt>Split by domain or by read/write</dt><dd>Examples: a read service for viewing, a write service for create/edit/delete, plus attendee and reminder services. Say which service owns which tables.</dd>
+              <dt>Sync vs. async</dt><dd>If the user doesn't need to wait, do it after the response through a queue.</dd>
+              <dt>Resilience</dt><dd>Timeouts, retries with backoff, and degrading gracefully when a dependency is down.</dd>
+            </dl>
+          </div>
+          <div>
+            <h4>Trade-offs</h4>
+            <ul class="tr">
+              <li><b>Monolith vs. microservices.</b> A monolith is simple to build and deploy. Microservices scale and ship independently, but add network failures and operational work. Start simple.</li>
+              <li><b>Sync vs. async.</b> Sync is simpler and the result is immediate. Async gives a fast response, but notifications and derived data arrive a moment later.</li>
+              <li><b>Separate read and write services.</b> Reads scale on their own, but more pieces to keep in sync.</li>
+              <li><b>Retries.</b> Recover from blips, but can cause duplicates unless the operation is idempotent.</li>
+            </ul>
+            <p class="tip"><b>Say:</b> "The user gets confirmation right away. Invites and reminders are processed in the background."</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="comp" id="c-data">
+        <header>
+          <h3>Data</h3>
+          <p class="sub">Modeling, storage, replication, caching</p>
+        </header>
+
+        <h4>Data modeling</h4>
+        <p class="note">Four questions to answer for the data layer: What is stored? How are the entities related? Which service reads or writes each table? Which database type, and why?</p>
+        <div class="cols">
+          <div>
+            <dl>
+              <dt>Entities → tables</dt><dd>Each core entity becomes a table. Each row is one record. List its columns and rough types (ID, text, timestamp, status).</dd>
+              <dt>Primary key</dt><dd>The column that uniquely identifies a row, such as <code>event_id</code>.</dd>
+              <dt>Foreign key</dt><dd>A column that points to another table's primary key. <code>event_id</code> in the attendees table ties each attendee back to an event.</dd>
+              <dt>Relationships</dt><dd>One-to-many is the common case: one event has many attendees. Say it explicitly when you draw it.</dd>
+            </dl>
+          </div>
+          <div>
+            <dl>
+              <dt>Who touches what</dt><dd>For each table, name the service that reads it and the service that writes it. This checks that the services and tables line up.</dd>
+              <dt>Start simple, then layer</dt><dd>Version one can be text-only. When media arrives, store the file in object storage and keep only its ID in the row.</dd>
+              <dt>Indexes</dt><dd>A lookup structure on a column. It makes reads on that column fast and makes writes a little slower.</dd>
+              <dt>Example</dt><dd>Calendar: <code>events</code> (event_id, user_id, title, start, end, timezone), <code>event_attendees</code> (event_id, user_id, rsvp), <code>reminder_jobs</code> (reminder_id, event_id, user_id, scheduled_time, status).</dd>
+            </dl>
+          </div>
+        </div>
+
+        <h4>Choosing and scaling the store</h4>
+        <div class="cols">
+          <div>
+            <dl>
+              <dt>SQL (relational)</dt><dd>Tables, relationships, transactions. Use when data is tightly related and must stay consistent together. A seat purchase must charge the card and reserve the seat as one unit. Most PM questions land here.</dd>
+              <dt>NoSQL</dt><dd>Flexible shape, huge scale, very high write throughput. Use when a slightly late or out-of-order record is fine, such as activity logs.</dd>
+              <dt>Atomic transaction</dt><dd>Several writes that all commit or all roll back, so users never see a half-updated event.</dd>
+              <dt>Storage types</dt><dd><b>Object</b> storage: cheap, higher latency, for files and video. <b>Block / file</b>: lower latency. <b>Relational</b> and <b>key-value</b> (DynamoDB, Redis) stores for structured data. <b>Vector</b> stores for nearest-neighbor search.</dd>
+            </dl>
+          </div>
+          <div>
+            <dl>
+              <dt>Replication</dt><dd>Writes go to the primary and are copied to replicas. Reads can use replicas. If the primary fails, a replica is promoted. Active-active setups let more than one node accept writes.</dd>
+              <dt>Caching</dt><dd>Fast in-memory store for data read often and changed rarely, like a leaderboard or "this week" view. Check the cache first, go to the database on a miss, and fill the cache. Decide the expiry (TTL) and the eviction rule (for example, least recently used).</dd>
+              <dt>Sharding</dt><dd>Splitting data across several databases by a shard key. Delay it until one primary can't keep up.</dd>
+              <dt>Consistency</dt><dd><b>Strong</b>: everyone sees the latest write. <b>Eventual</b>: copies catch up shortly after.</dd>
+            </dl>
+          </div>
+        </div>
+        <ul class="tr">
+          <li><b>SQL vs. NoSQL.</b> SQL gives correctness across related tables. NoSQL gives scale and flexibility, but you handle relationships and consistency yourself.</li>
+          <li><b>Read replica.</b> More read capacity and survival of a primary outage, but replication lag can show a user old data right after their own write.</li>
+          <li><b>Cache.</b> Fast reads and lower DB load, but stale data and invalidation logic you must keep correct.</li>
+          <li><b>Strong vs. eventual consistency.</b> Strong is trustworthy but slower and less available under failure. Eventual is fast and available, but briefly stale.</li>
+          <li><b>Normalize vs. denormalize.</b> Normalized data has one source of truth. Denormalized data reads faster but is duplicated and can drift.</li>
+          <li><b>Sharding.</b> Scales writes, but cross-shard queries and rebalancing are painful.</li>
+        </ul>
+        <p class="tip"><b>Say:</b> "Events and attendees are tightly coupled and correctness matters, so SQL, with writes in one transaction."</p>
+      </article>
+
+      <article class="comp" id="c-async">
+        <header>
+          <h3>Optional Components</h3>
+          <p class="sub">Queue, object storage, search, analytics</p>
+        </header>
+        <div class="cols">
+          <div>
+            <h4>Core concepts</h4>
+            <dl>
+              <dt>Message queue</dt><dd>A producer writes a message. A consumer reads it later. They don't need to run at the same time, and each side scales on its own. Use for notifications, fan-out, retries, and absorbing spikes.</dd>
+              <dt>At-least-once delivery</dt><dd>A message can arrive twice, so consumers must be safe to repeat (idempotent). Messages that keep failing go to a dead-letter queue.</dd>
+              <dt>Object storage</dt><dd>Holds files and blobs outside the database. Metadata and the file's ID stay in the database. Often paired with a CDN.</dd>
+              <dt>Search index</dt><dd>A separate copy of data built for full-text search, fuzzy match, and filters. Kept in sync from the database, usually through events.</dd>
+              <dt>Analytics pipeline</dt><dd>Events go onto a queue, then to object storage and a data warehouse (Snowflake, Hadoop), then to business dashboards. Analytics workloads stay off the production database.</dd>
+            </dl>
+          </div>
+          <div>
+            <h4>Trade-offs</h4>
+            <ul class="tr">
+              <li><b>Queue.</b> Fast responses and buffered spikes, but eventual consistency, possible duplicates, and another system to run.</li>
+              <li><b>Object storage + CDN.</b> Cheap and fast at scale, but an upload flow to design (often pre-signed URLs) and purge on change.</li>
+              <li><b>Search index.</b> Real search quality, but a second copy of data that can lag the database.</li>
+              <li><b>Warehouse.</b> Analytics without hurting users, but data is not real time.</li>
+            </ul>
+            <p class="tip"><b>Say:</b> Name the trigger before you draw the box. See the table below for each component's trigger and cost.</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="optional">
+    <div class="section-head">
+      <h2>When to Add an Optional Component</h2>
       <p>Each one solves a specific problem and adds something you now have to operate. Name the trigger before you draw it.</p>
     </div>
     <div class="tablewrap">
@@ -350,6 +1058,50 @@ td.cost { color: var(--muted); }
       </table>
     </div>
   </section>
+
+  <section id="tradeoffs">
+    <div class="section-head">
+      <h2>Trade-Offs</h2>
+      <p>Every choice costs something. Interviewers score whether you name the cost and tie it to the product. For each decision, say what the user notices.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Decision</th><th>You gain</th><th>You give up</th><th>What the user notices</th></tr></thead>
+        <tbody>
+          <tr><td>Add a cache</td><td>Fast reads, less DB load</td><td class="cost">Invalidation logic, stale risk</td><td class="cost">Occasionally old data after an edit</td></tr>
+          <tr><td>Read replica</td><td>Read capacity, survives primary outage</td><td class="cost">Replication lag</td><td class="cost">Your own change may not show immediately</td></tr>
+          <tr><td>Async via queue</td><td>Instant confirmation, absorbs spikes</td><td class="cost">Eventual consistency, duplicates</td><td class="cost">Invite or email arrives a little later</td></tr>
+          <tr><td>SQL</td><td>Correctness across related data</td><td class="cost">Harder to scale writes</td><td class="cost">Rarely visible</td></tr>
+          <tr><td>NoSQL</td><td>Scale, flexible shape</td><td class="cost">Relationships and consistency are on you</td><td class="cost">Late or out-of-order records</td></tr>
+          <tr><td>Strong consistency</td><td>Everyone sees the same truth</td><td class="cost">Latency, lower availability under failure</td><td class="cost">Slower, or an error during an outage</td></tr>
+          <tr><td>Eventual consistency</td><td>Speed, availability</td><td class="cost">Briefly stale reads</td><td class="cost">Counts or status that catch up in seconds</td></tr>
+          <tr><td>Horizontal scaling</td><td>Survives failures, grows cheaply</td><td class="cost">Stateless design, load balancer, coordination</td><td class="cost">Nothing, if done right</td></tr>
+          <tr><td>Microservices</td><td>Independent scaling and releases</td><td class="cost">Network failures, ops overhead</td><td class="cost">Partial outages instead of one big one</td></tr>
+          <tr><td>REST vs. GraphQL</td><td>REST: simple, cacheable. GraphQL: fewer round trips</td><td class="cost">REST: over-fetching. GraphQL: server complexity</td><td class="cost">Screen load time on slow networks</td></tr>
+          <tr><td>Cursor vs. offset paging</td><td>Cursor: stable under writes. Offset: jump to any page</td><td class="cost">Cursor: no random access. Offset: repeats/skips</td><td class="cost">Duplicate or missing items in a feed</td></tr>
+          <tr><td>Rate limiting</td><td>Protects the system from abuse</td><td class="cost">Blocks some legitimate bursts</td><td class="cost">An occasional "try again later"</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="say">
+      <h3>How to Say It</h3>
+      <p><b>Template:</b> "We chose <i>X</i> because the requirement is <i>Y</i>. The cost is <i>Z</i>, which we accept because <i>product goal</i>."</p>
+      <p><b>Example:</b> "We cache the calendar view because users check their schedule constantly and speed matters. The cost is that we have to refresh the cache whenever an event changes. In a time-sensitive product, a fast view is worth that."</p>
+      <p><b>Example:</b> "Reminders and invites run asynchronously, so the user gets confirmation immediately. The cost is that an invite can arrive slightly late. Confirming the save matters more than delivering the invite in the same instant."</p>
+    </div>
+  </section>
+
+  <footer class="sources">
+    <h3>Sources</h3>
+    <p>Built from these videos on system design for PM and technical interviews.</p>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=sceLOWO7r-o">PM system design framework, worked on Google Calendar</a></li>
+      <li><a href="https://www.youtube.com/watch?v=hK1SJqJi1PU">PM/TPM system design framework, worked on Twitter</a></li>
+      <li><a href="https://www.youtube.com/watch?v=bpuWAMbxM2A">System design 101: scaling from zero to 100 million users</a></li>
+      <li><a href="https://www.youtube.com/watch?v=L9TfZdODuFQ">How to answer system design questions: the five steps</a></li>
+      <li><a href="https://www.youtube.com/watch?v=DQ57zYedMdQ">Hello Interview: API design for system design interviews</a></li>
+    </ul>
+  </footer>
 </main>
 </body>
 </html>
