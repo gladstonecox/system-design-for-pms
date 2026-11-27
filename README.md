@@ -5,7 +5,7 @@ Reference material and practice designs for reading and sketching system archite
 | Folder | What's in it |
 |---|---|
 | [`blueprint/`](blueprint/) | A generic system design blueprint, published as a web page |
-| [`workday-supplier-invoices/`](workday-supplier-invoices/) | A practice design for supplier invoices, from first draft to an interview-ready version, as editable Mermaid diagrams |
+| [`technical-foundations/`](technical-foundations/) | A practice design for supplier invoices, from first draft to an interview-ready version, as editable Mermaid diagrams |
 
 ## System Design Blueprint
 
@@ -20,6 +20,6 @@ Reference material and practice designs for reading and sketching system archite
 
 The page also traces a read path and a write path, gives a checklist of what to decide at each layer, and has a table of when to add each optional component and what it costs to run.
 
-## Workday Supplier Invoices
+## Technical Foundations
 
-A worked example of designing one feature: adding line items to an invoice, and accepting invoices sent directly by suppliers. It has three versions of the same system, each a Mermaid diagram that GitHub renders and you can edit anywhere. See the [folder README](workday-supplier-invoices/).
+A worked example of designing one feature: adding line items to a supplier invoice, and accepting invoices sent directly by suppliers. It has three versions of the same system, each a Mermaid diagram that GitHub renders and you can edit anywhere. See the [folder README](technical-foundations/).
